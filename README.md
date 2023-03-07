@@ -21,31 +21,36 @@
 
 ## Docker
 
-#### Build
+#### Build.
 
 ```sh
 sudo docker-compose build
 ```
 
-#### Start
+#### Start.
 
 ```sh
 sudo docker-compose up
 ```
 
-#### Restart drf-server for development
+#### Restart drf-server for development.
 
 ```sh
 sudo docker-compose up -d --no-deps --build server
 ```
-#### Start in detached mode
+#### Start in detached mode.
 
 ```sh
 sudo docker-compose up --build -d
 ```
 
-#### Stop
+#### Stop.
 
 ```sh
 sudo docker-compose stop
 ```
+
+
+## Contribution
+
+#### Thank you to [saqibur](https://github.com/saqibur/) for a [ django-project-structure](https://github.com/saqibur/django-project-structure).
