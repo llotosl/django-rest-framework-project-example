@@ -1,4 +1,4 @@
-# This is DRF project example with:
+## This is DRF project example with:
 #### 1. JWT Authentication.
 - based on simple-jwt
 #### 2. Users Endpoints:
