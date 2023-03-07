@@ -18,3 +18,34 @@
 #### 7. Filters:
 - based on django-filter
 - _/api/v1/news/_
+
+## Docker
+
+#### Build
+
+```sh
+sudo docker-compose build
+```
+
+#### Start
+
+```sh
+sudo docker-compose up
+```
+
+#### Restart drf-server for development
+
+```sh
+sudo docker-compose up -d --no-deps --build server
+```
+#### Start in detached mode
+
+```sh
+sudo docker-compose up --build -d
+```
+
+#### Stop
+
+```sh
+sudo docker-compose stop
+```
