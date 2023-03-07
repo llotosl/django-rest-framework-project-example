@@ -1,4 +1,4 @@
-version: '2'
+version: '3'
 
 services:
     nginx:
@@ -53,3 +53,9 @@ services:
 volumes:
     static_volume: {}
     postgres_data: {}
+
+
+# sudo docker-compose build && sudo docker-compose up // build and start
+# sudo docker-compose up --build -d // start in detached mode
+# sudo docker-compose up -d --no-deps --build server // for restart server-container
+# sudo docker-compose down // stop

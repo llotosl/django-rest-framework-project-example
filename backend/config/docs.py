@@ -1,6 +1,6 @@
 from django.urls import re_path
 
-from rest_framework.permissions import IsAdminUser
+from rest_framework.permissions import AllowAny
 
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
@@ -8,15 +8,15 @@ from drf_yasg import openapi
 # Generating docs.
 schema_view = get_schema_view(
     openapi.Info(
-        title="Dummy API",
+        title="Example API",
         default_version='v1',
-        description="Dummy description",
+        description="This is test example API.",
         terms_of_service="https://www.google.com/policies/terms/",
-        contact=openapi.Contact(email="contact@dummy.local"),
+        contact=openapi.Contact(email="contact@example.com"),
         license=openapi.License(name="BSD License"),
     ),
     public=True,
-    permission_classes=(IsAdminUser,),
+    permission_classes=(AllowAny,),
 )
 
 urlpatterns = [

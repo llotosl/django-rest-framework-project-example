@@ -9,18 +9,18 @@ from .docs import urlpatterns as docs_urls
 
 
 urlpatterns = [
-    # Admin Panel
-    path('admin/', admin.site.urls),
-    
     path('', include('apps.core.urls')),
     path('', include('apps.users.urls')),
     path('', include('apps.news.urls')),
 ]
 
+# Docs urls
+urlpatterns += docs_urls
+
 if settings.DEBUG:
-    # Django debug toolbar
     urlpatterns += [
+        # Django debug toolbar
         path('__debug__/', include('debug_toolbar.urls')),
+        # Admin Panel
+        path('admin/', admin.site.urls),
     ]
-    # Docs urls
-    urlpatterns += docs_urls

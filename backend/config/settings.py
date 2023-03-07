@@ -27,11 +27,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('ALLOWED_HOSTS')
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 ALLOWED_HOSTS = json.loads(os.getenv('ALLOWED_HOSTS'))
 
-DEBUG = os.getenv('ALLOWED_HOSTS', False)
+DEBUG = os.getenv('DEBUG') == 'True'
 
 # Application definition
 
@@ -66,10 +66,6 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
-]
-
-INTERNAL_IPS = [
-    
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -209,9 +205,10 @@ if DEBUG:
     MIDDLEWARE += [
         'debug_toolbar.middleware.DebugToolbarMiddleware',
     ]
-    INTERNAL_IPS += [
-        '127.0.0.1'
-    ]
+    DEBUG_TOOLBAR_CONFIG = {
+        'SHOW_TOOLBAR_CALLBACK': lambda request: True,
+    }
+        
 
 AUTH_USER_MODEL = 'users.CustomUser'
 
@@ -227,3 +224,14 @@ EMAIL_PORT = os.getenv('EMAIL_PORT')
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL')
+
+# Docs config.
+SWAGGER_SETTINGS = {
+   'SECURITY_DEFINITIONS': {
+        'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header'
+        }
+    }
+}

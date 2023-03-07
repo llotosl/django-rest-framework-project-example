@@ -4,17 +4,20 @@ from rest_framework.generics import CreateAPIView
 from rest_framework.views import Response, APIView
 from rest_framework.exceptions import NotFound
 
-from django.db.models import Count
+from django.db.models import Count, Subquery, OuterRef
 
 from .serializers import NewsSerializer, CurrentNewsSerializer, NewsLikeSerializer, NewsCommentSerializer
 from apps.news.models import News, NewsLike, NewsComment, Comment
 from apps.core.permissions import IsAdminOrReadOnly
 from .tasks import send_news_to_email
+from .filters import NewsFilterSet
 
 
 class NewsViewset(viewsets.ModelViewSet):
     queryset = News.objects.all()
     permission_classes = (IsAdminOrReadOnly,)
+    
+    filterset_class = NewsFilterSet
 
     def get_serializer_class(self):
         if self.action in ('retrieve',):
@@ -25,7 +28,7 @@ class NewsViewset(viewsets.ModelViewSet):
 
     def get_queryset(self):
         if self.action in ('retrieve',):
-            return News.objects.prefetch_related('likes', 'comments', 'comments__user').annotate(
+            return News.objects.prefetch_related('likes', 'comments__user').annotate(
                 likes_count=Count(
                     'likes',
                     distinct=True
@@ -33,6 +36,11 @@ class NewsViewset(viewsets.ModelViewSet):
                 comments_count=Count(
                     'comments',
                     distinct=True
+                ),
+                last_comment_user_public_field=Subquery(
+                    NewsComment.objects.select_related('comment__user').filter(
+                        news=OuterRef('pk')
+                    ).order_by('-pk').values('comment__user__public_field')[:1]
                 ),
             )
 
@@ -96,5 +104,5 @@ class NewsSendToEmailView(APIView):
         if not exists:
             raise NotFound('News not found')
         send_news_to_email.delay(id, request.user.email)
-        
+
         return Response(data={'status': 'ok'})
