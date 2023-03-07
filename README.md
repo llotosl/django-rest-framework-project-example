@@ -2,7 +2,7 @@
 #### 1. JWT Authentication.
 - based on simple-jwt
 #### 2. Users Endpoints:
-- ased on djoser
+- based on djoser
 #### 3. News Model with comments and likes with:
 - Viewsets
 - GenericAPIViews
