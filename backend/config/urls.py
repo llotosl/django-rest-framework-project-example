@@ -19,8 +19,8 @@ urlpatterns += docs_urls
 
 if settings.DEBUG:
     urlpatterns += [
-        # Django debug toolbar
-        path('__debug__/', include('debug_toolbar.urls')),
         # Admin Panel
         path('admin/', admin.site.urls),
+        # Django debug toolbar
+        path('__debug__/', include('debug_toolbar.urls')),
     ]

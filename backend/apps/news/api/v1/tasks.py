@@ -11,6 +11,9 @@ def send_news_to_email(news_id: int, email: str):
     news = News.objects.filter(
         id=news_id
     ).first()
+    
+    if news is None:
+        return
 
     message = news.subtitle + '\n\n' if news.subtitle else '' + news.text
 

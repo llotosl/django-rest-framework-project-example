@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework.validators import qs_exists
 
 from apps.news.models import News, NewsLike, NewsComment, Comment
 from apps.users.serializers import PublicCustomUserSerializer

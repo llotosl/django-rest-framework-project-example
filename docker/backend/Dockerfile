@@ -2,6 +2,8 @@
 # pull official base image
 FROM python:3.10.9-alpine
 
+ENV PYTHONUNBUFFERED=1
+
 RUN apk update && apk add python3-dev gcc libc-dev libffi-dev
 
 WORKDIR /app

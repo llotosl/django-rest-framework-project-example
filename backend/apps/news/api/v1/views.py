@@ -2,7 +2,7 @@ from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.generics import CreateAPIView
 from rest_framework.views import Response, APIView
-from rest_framework.exceptions import NotFound
+from rest_framework.exceptions import NotFound, ValidationError
 
 from django.db.models import Count, Subquery, OuterRef
 
@@ -53,12 +53,17 @@ class NewsLikeView(CreateAPIView):
     serializer_class = NewsLikeSerializer
 
     def create(self, request, id: int, *args, **kwargs):
+        status_code = 200
         serializer = NewsLikeSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
+        
+        if not News.objects.filter(id=id).exists():
+            raise NotFound('News does not exists.')
 
         news = NewsLike.objects.filter(user=request.user).first()
         if news:
             news.delete()
+            status_code = 204
         else:
             news = NewsLike.objects.create(
                 user=request.user,
@@ -67,7 +72,7 @@ class NewsLikeView(CreateAPIView):
 
         serializer = NewsLikeSerializer(news)
 
-        return Response(data=serializer.data)
+        return Response(data=serializer.data, status=status_code)
 
 
 class NewsCommentView(CreateAPIView):
@@ -78,6 +83,9 @@ class NewsCommentView(CreateAPIView):
     def create(self, request, id: int, *args, **kwargs):
         serializer = NewsCommentSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
+        
+        if not News.objects.filter(id=id).exists():
+            raise NotFound('News does not exists.')
 
         comment = Comment.objects.create(
             user=request.user,
@@ -102,7 +110,7 @@ class NewsSendToEmailView(APIView):
             id=id
         ).exists()
         if not exists:
-            raise NotFound('News not found')
-        send_news_to_email.delay(id, request.user.email)
+            raise NotFound('News does not exists.')
+        send_news_to_email(id, request.user.email)
 
         return Response(data={'status': 'ok'})
