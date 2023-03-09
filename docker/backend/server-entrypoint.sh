@@ -12,6 +12,8 @@ do
     sleep 2
 done
 
+python manage.py test
+
 
 python manage.py collectstatic --noinput
 
