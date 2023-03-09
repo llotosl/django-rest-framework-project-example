@@ -10,14 +10,6 @@ class NewsSerializer(serializers.ModelSerializer):
         fields = ('id', 'title', 'subtitle', 'text')
 
 
-class UserLikeSerializer(serializers.ModelSerializer):  # Serializer for output
-    public_field = serializers.CharField()
-
-    class Meta:
-        model = NewsLike
-        fields = ('id', 'public_field')
-
-
 class UserCommentSerializer(serializers.ModelSerializer):  # Serializer for output
     user = PublicCustomUserSerializer(read_only=True)
     text = serializers.EmailField()
